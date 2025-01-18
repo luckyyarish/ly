@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #515152;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 90vw;
+            height: 90vh;
+            background: #19191a;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 1.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card .img1 {
+            width: 25vw;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card img:hover {
+            transform: scale(1.1);
+        }
+
+        .card .img2 {
+            width: 20vw;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgb(243, 126, 0, 0.9);
+        }
+
+        .card .img3 {
+            width: 20vw;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgb(0, 255, 0, 0.9);
+        }
+        
+        #message {
+            font-size: 20px;
+            color: #8a8a8a;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 35px;
+            padding: 0 10px;
+            word-wrap: break-word;
+        }
+
+        #confettiContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .card {
+                width: 95vw;
+                height: 80vh;
+            }
+
+            .card img {
+                width: 30vw;
+            }
+
+            .card .img1 {
+                width: 35vw;
+            }
+
+            #message {
+                font-size: 20px;
+                font-style: italic;
+                font-weight: 700;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 95vw;
+                height: 85vh;
+            }
+
+            .card .img1 {
+                width: 45vw;
+            }
+
+            .card .img2 {
+                width: 40vw;
+            }
+
+            .card .img3 {
+                width: 40vw;
+                object-fit: cover;
+                object-position: top center;
+            }
+
+            #message {
+                font-size: 16px;
+                font-style: italic;
+                font-weight: 700;
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div id="confettiContainer"></div>
+        <img src="./HBD.png" alt="Birthday" class="img1">
+        <img src="./IMG.jpg" alt="Birthday Image 1" class="img2">
+        <img src="./Cake.jpg" alt="Birthday Image 2" class="img3">
+        <p id="message"></p>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script>
+
+        // GSAP Animations
+        gsap.from(".card", { opacity: 0, duration: 1, y: 100 });
+        gsap.from(".img2", { opacity: 0, duration: 1, y: -50, delay: 0.5 });
+        gsap.from(".img3", { opacity: 0, duration: 1, y: 50, delay: 0.7 });
+
+        // Add movement to images
+        gsap.to(".img2", {
+            x: 100,
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        });
+
+        gsap.to(".img3", {
+            x: -100,
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        });
+
+        // Typewriter effect
+        function typeWriter(message, text, speed) {
+            let i = 0;
+            const element = document.getElementById(message);
+            const typingInterval = setInterval(function () {
+                element.innerHTML += text.charAt(i);
+                i++;
+                if (i === text.length) {
+                    clearInterval(typingInterval);
+                }
+            }, speed);
+        }
+
+        // Function to generate a random number within a range
+        function randomBetween(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Function to create a single confetti piece
+        function createConfetti() {
+            const confetti = document.createElement("div");
+            confetti.style.position = "absolute";
+            confetti.style.width = `${randomBetween(10, 30)}px`;
+            confetti.style.height = `${randomBetween(10, 30)}px`;
+            confetti.style.backgroundColor = `hsl(${randomBetween(0, 360)}, 100%, 50%)`;
+            confetti.style.borderRadius = "50%";
+            confetti.style.opacity = "1";
+            confetti.style.animation = `confettiAnimation ${randomBetween(2, 4)}s ease-out forwards`;
+
+            // Randomize the starting position of the confetti
+            confetti.style.top = `${randomBetween(-50, window.innerHeight)}px`;
+            confetti.style.left = `${randomBetween(0, window.innerWidth)}px`;
+
+            // Append the confetti piece to the container
+            document.getElementById("confettiContainer").appendChild(confetti);
+
+            // Remove confetti after animation ends
+            confetti.addEventListener('animationend', () => {
+                confetti.remove();
+            });
+        }
+
+        // Animation keyframes for confetti movement
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+@keyframes confettiAnimation {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(${randomBetween(100, 300)}px) rotate(180deg);
+    }
+    100% {
+        transform: translateY(${randomBetween(200, 500)}px) rotate(360deg);
+        opacity: 0;
+    }
+}`;
+        document.head.appendChild(styleSheet);
+
+        // Trigger the confetti effect and typewriter effect automatically when the page loads
+        window.onload = () => {
+            // Create 100 confetti pieces on page load
+            for (let i = 0; i < 100; i++) {
+                createConfetti();
+            }
+
+            // Initialize the typewriter effect on the paragraph
+            const text = `System.out.println("Happy Birthday Bro! Wishing you endless loops of joy and success!");`;
+            const speed = 100;  // Speed in milliseconds between each character
+            typeWriter('message', text, speed);
+        };
+
+    </script>
+
+</body>
+
+</html>
