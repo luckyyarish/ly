@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: gilroy;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: #ffffff;
 }
 html,body{
@@ -64,3 +64,49 @@ h1{
     font-size: 120px;
     font-family: monument;
 }
+
+/* Media Queries for Responsiveness */
+
+/* For devices with screen widths of 768px or smaller (tablets, small screens) */
+@media (max-width: 768px) {
+    #nav {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    #logo a {
+      font-size: 20px;
+    }
+  
+    #part2 a {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+  
+    #home a {
+      font-size: 24px;
+      padding: 15px 30px;
+    }
+  }
+  
+  /* For devices with screen widths of 480px or smaller (smartphones) */
+  @media (max-width: 480px) {
+    #nav {
+      flex-direction: row;
+      padding: 10px;
+    }
+  
+    #logo a {
+      font-size: 18px;
+    }
+  
+    #part2 a {
+      font-size: 12px;
+      margin: 5px 0;
+    }
+  
+    #home a {
+      font-size: 20px;
+      padding: 10px 10px;
+    }
+  }
